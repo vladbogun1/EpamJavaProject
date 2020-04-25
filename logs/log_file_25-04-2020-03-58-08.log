@@ -1,0 +1,277 @@
+2020-04-25 15:58:08 INFO  LifestyleListener:40 - Server started.
+2020-04-25 15:58:18 INFO  ScriptRunner:27 - Database initiating started...
+2020-04-25 15:58:18 INFO  ScriptRunner:49 - Executing: DROP TABLE IF EXISTS `hospital_card`;
+
+2020-04-25 15:58:19 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `meeting`;
+
+2020-04-25 15:58:19 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `user`;
+
+2020-04-25 15:58:19 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `role`;
+
+2020-04-25 15:58:20 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `specialization`;
+
+2020-04-25 15:58:20 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `patient`;
+
+2020-04-25 15:58:20 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `patient` (
+  `patient_id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `birthday` date DEFAULT NULL,
+  PRIMARY KEY (`patient_id`)
+);
+
+2020-04-25 15:58:21 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `patient` (`first_name`, `last_name`, `birthday`) VALUES
+('Ivan', 'Ivanov','2018-10-20'),
+('Petya', 'Petrov','2015-10-20'),
+('Ivan', 'Petrov','2013-01-20');
+
+2020-04-25 15:58:21 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `hospital_card` (
+  `hospital_card_id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) NOT NULL,
+  `hospital_card_date` date DEFAULT NULL,
+  `diagnosis` varchar (200) NOT NULL,
+  `name_of_medication` varchar(40) NOT NULL,
+  `done` tinyint(1) DEFAULT NULL,
+  FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`hospital_card_id`)
+);
+
+2020-04-25 15:58:21 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `role` (
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(10) NOT NULL,
+  PRIMARY KEY (`role_id`),
+  UNIQUE KEY `role_name` (`role_name`)
+);
+
+2020-04-25 15:58:22 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(0, 'admin'),
+(1, 'doctor'),
+(2, 'nurse');
+
+2020-04-25 15:58:22 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `specialization` (
+  `specialization_id` int(11) NOT NULL AUTO_INCREMENT,
+  `specialization_name` varchar(30) NOT NULL,
+  PRIMARY KEY (`specialization_id`)
+);
+
+2020-04-25 15:58:22 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `specialization` (`specialization_id`, `specialization_name`) VALUES
+(1, 'Педиатр'),
+(2, 'Травматолог'),
+(3, 'Хирург');
+
+2020-04-25 15:58:23 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(10) DEFAULT NULL,
+  `password` varchar(150) DEFAULT NULL,
+  `first_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `specialization_id` int(11) DEFAULT NULL,
+  `count_of_patients` int(11) DEFAULT NULL,
+  FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`specialization_id`) REFERENCES `specialization` (`specialization_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `login` (`login`)
+);
+
+2020-04-25 15:58:23 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `user` (`user_id`, `login`, `password`, `first_name`, `last_name`, `role_id`, `specialization_id`, `count_of_patients`) VALUES
+(1, 'admin', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Ivan', 'Ivanov', 0, NULL, 0),
+(2, 'doctor', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Petr', 'Petrov', 1, 1, 4),
+(3, 'so123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Вячеслав', 'Соколов', 1, 3, 2),
+(6, 'nurse', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(7, 'nurse1', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(8, 'karl123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Карл', 'Шафранек', 1, 2, 3);
+
+2020-04-25 15:58:23 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `meeting` (
+  `meeting_id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`meeting_id`)
+);
+
+2020-04-25 15:58:24 INFO  ScriptRunner:74 - Database initiating finished.
+2020-04-25 15:59:32 ERROR ImagesGenerator:44 - Failed to generate img
+com.talanlabs.avatargenerator.AvatarException: Failed to build avatar
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:128)
+	at com.talanlabs.avatargenerator.Avatar.create(Avatar.java:71)
+	at main.java.ua.nure.bogun.epammed.service.ImagesGenerator.generate(ImagesGenerator.java:41)
+	at main.java.ua.nure.bogun.epammed.database.UserDBManager.getUser(UserDBManager.java:52)
+	at main.java.ua.nure.bogun.epammed.database.UserDBManager.findAdminByLogin(UserDBManager.java:100)
+	at main.java.ua.nure.bogun.epammed.service.dbservice.UserService.getAdminByLogin(UserService.java:16)
+	at main.java.ua.nure.bogun.epammed.service.ClientLoginService.getUser(ClientLoginService.java:32)
+	at main.java.ua.nure.bogun.epammed.service.ClientLoginService.logining(ClientLoginService.java:15)
+	at main.java.ua.nure.bogun.epammed.servlets.LoginServlet.doPost(LoginServlet.java:33)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:678)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:861)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1579)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+	at java.lang.String.substring(String.java:1963)
+	at com.talanlabs.avatargenerator.utils.AvatarUtils.extractColor(AvatarUtils.java:196)
+	at com.talanlabs.avatargenerator.element.GitHubElementRegistry.buildImage(GitHubElementRegistry.java:32)
+	at com.talanlabs.avatargenerator.element.AbstractImageElementRegistry.getElement(AbstractImageElementRegistry.java:21)
+	at com.talanlabs.avatargenerator.Avatar.buildAvatarImage(Avatar.java:150)
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:108)
+	... 32 more
+2020-04-25 15:59:52 INFO  LoginServlet:40 - User #1 log in successful.
+2020-04-25 15:59:52 INFO  UserPageServlet:31 - User #1 move to page /admin
+2020-04-25 16:03:48 ERROR ImagesGenerator:44 - Failed to generate img
+com.talanlabs.avatargenerator.AvatarException: Failed to build avatar
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:128)
+	at com.talanlabs.avatargenerator.Avatar.create(Avatar.java:71)
+	at main.java.ua.nure.bogun.epammed.service.ImagesGenerator.generate(ImagesGenerator.java:41)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.getPatient(PatientDBManager.java:37)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.findAllPatients(PatientDBManager.java:85)
+	at main.java.ua.nure.bogun.epammed.service.dbservice.PatientService.getAllPatients(PatientService.java:13)
+	at main.java.ua.nure.bogun.epammed.servlets.admin.AdminMainServlet.doGet(AdminMainServlet.java:33)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:678)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:861)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1579)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+	at java.lang.String.substring(String.java:1963)
+	at com.talanlabs.avatargenerator.utils.AvatarUtils.extractColor(AvatarUtils.java:196)
+	at com.talanlabs.avatargenerator.element.GitHubElementRegistry.buildImage(GitHubElementRegistry.java:32)
+	at com.talanlabs.avatargenerator.element.AbstractImageElementRegistry.getElement(AbstractImageElementRegistry.java:21)
+	at com.talanlabs.avatargenerator.Avatar.buildAvatarImage(Avatar.java:150)
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:108)
+	... 30 more
+2020-04-25 16:03:57 ERROR ImagesGenerator:44 - Failed to generate img
+com.talanlabs.avatargenerator.AvatarException: Failed to build avatar
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:128)
+	at com.talanlabs.avatargenerator.Avatar.create(Avatar.java:71)
+	at main.java.ua.nure.bogun.epammed.service.ImagesGenerator.generate(ImagesGenerator.java:41)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.getPatient(PatientDBManager.java:37)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.findAllPatients(PatientDBManager.java:85)
+	at main.java.ua.nure.bogun.epammed.service.dbservice.PatientService.getAllPatients(PatientService.java:13)
+	at main.java.ua.nure.bogun.epammed.servlets.admin.AdminMainServlet.doGet(AdminMainServlet.java:33)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:678)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:861)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1579)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+	at java.lang.String.substring(String.java:1963)
+	at com.talanlabs.avatargenerator.utils.AvatarUtils.extractColor(AvatarUtils.java:196)
+	at com.talanlabs.avatargenerator.element.GitHubElementRegistry.buildImage(GitHubElementRegistry.java:32)
+	at com.talanlabs.avatargenerator.element.AbstractImageElementRegistry.getElement(AbstractImageElementRegistry.java:21)
+	at com.talanlabs.avatargenerator.Avatar.buildAvatarImage(Avatar.java:150)
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:108)
+	... 30 more
+2020-04-25 16:04:03 ERROR ImagesGenerator:44 - Failed to generate img
+com.talanlabs.avatargenerator.AvatarException: Failed to build avatar
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:128)
+	at com.talanlabs.avatargenerator.Avatar.create(Avatar.java:71)
+	at main.java.ua.nure.bogun.epammed.service.ImagesGenerator.generate(ImagesGenerator.java:41)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.getPatient(PatientDBManager.java:37)
+	at main.java.ua.nure.bogun.epammed.database.PatientDBManager.findAllPatients(PatientDBManager.java:85)
+	at main.java.ua.nure.bogun.epammed.service.dbservice.PatientService.getAllPatients(PatientService.java:13)
+	at main.java.ua.nure.bogun.epammed.servlets.admin.AdminMainServlet.doGet(AdminMainServlet.java:33)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:678)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:861)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1579)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+	at java.lang.String.substring(String.java:1963)
+	at com.talanlabs.avatargenerator.utils.AvatarUtils.extractColor(AvatarUtils.java:196)
+	at com.talanlabs.avatargenerator.element.GitHubElementRegistry.buildImage(GitHubElementRegistry.java:32)
+	at com.talanlabs.avatargenerator.element.AbstractImageElementRegistry.getElement(AbstractImageElementRegistry.java:21)
+	at com.talanlabs.avatargenerator.Avatar.buildAvatarImage(Avatar.java:150)
+	at com.talanlabs.avatargenerator.Avatar.buildAll(Avatar.java:108)
+	... 30 more

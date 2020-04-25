@@ -1,0 +1,176 @@
+2020-04-25 19:47:39 INFO  LifestyleListener:40 - Server started.
+2020-04-25 19:47:42 INFO  ScriptRunner:27 - Database initiating started...
+2020-04-25 19:47:42 INFO  ScriptRunner:49 - Executing: DROP TABLE IF EXISTS `hospital_card`;
+
+2020-04-25 19:47:43 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `meeting`;
+
+2020-04-25 19:47:43 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `user`;
+
+2020-04-25 19:47:43 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `role`;
+
+2020-04-25 19:47:44 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `specialization`;
+
+2020-04-25 19:47:44 INFO  ScriptRunner:49 - Executing: 
+DROP TABLE IF EXISTS `patient`;
+
+2020-04-25 19:47:44 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `patient` (
+  `patient_id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `birthday` date DEFAULT NULL,
+  PRIMARY KEY (`patient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+2020-04-25 19:47:45 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `patient` (`first_name`, `last_name`, `birthday`) VALUES
+('Ivan', 'Ivanov','2018-10-20'),
+('Petya', 'Petrov','2015-10-20'),
+('Ivan', 'Petrov','2013-01-20');
+
+2020-04-25 19:47:45 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `hospital_card` (
+  `hospital_card_id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) NOT NULL,
+  `hospital_card_date` date DEFAULT NULL,
+  `diagnosis` varchar (200) NOT NULL,
+  `name_of_medication` varchar(40) NOT NULL,
+  `done` tinyint(1) DEFAULT NULL,
+  FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`hospital_card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+2020-04-25 19:47:45 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `role` (
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(10) NOT NULL,
+  PRIMARY KEY (`role_id`),
+  UNIQUE KEY `role_name` (`role_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+2020-04-25 19:47:46 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(0, 'admin'),
+(1, 'doctor'),
+(2, 'nurse');
+
+2020-04-25 19:47:46 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `specialization` (
+  `specialization_id` int(11) NOT NULL AUTO_INCREMENT,
+  `specialization_name` varchar(30) NOT NULL,
+  PRIMARY KEY (`specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+2020-04-25 19:47:47 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `specialization` (`specialization_id`, `specialization_name`) VALUES
+(1, 'Педиатр'),
+(2, 'Травматолог'),
+(3, 'Хирург');
+
+2020-04-25 19:47:47 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(10) DEFAULT NULL,
+  `password` varchar(150) DEFAULT NULL,
+  `first_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `specialization_id` int(11) DEFAULT NULL,
+  `count_of_patients` int(11) DEFAULT NULL,
+  FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`specialization_id`) REFERENCES `specialization` (`specialization_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `login` (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+2020-04-25 19:47:47 INFO  ScriptRunner:49 - Executing: 
+INSERT INTO `user` (`user_id`, `login`, `password`, `first_name`, `last_name`, `role_id`, `specialization_id`, `count_of_patients`) VALUES
+(1, 'admin', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Ivan', 'Ivanov', 0, NULL, 0),
+(2, 'doctor', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Petr', 'Petrov', 1, 1, 4),
+(3, 'so123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Вячеслав', 'Соколов', 1, 3, 2),
+(6, 'nurse', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(7, 'nurse1', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(8, 'karl123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Карл', 'Шафранек', 1, 2, 3);
+
+2020-04-25 19:47:48 ERROR ScriptRunner:56 - ===
+
+INSERT INTO `user` (`user_id`, `login`, `password`, `first_name`, `last_name`, `role_id`, `specialization_id`, `count_of_patients`) VALUES
+(1, 'admin', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Ivan', 'Ivanov', 0, NULL, 0),
+(2, 'doctor', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Petr', 'Petrov', 1, 1, 4),
+(3, 'so123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Вячеслав', 'Соколов', 1, 3, 2),
+(6, 'nurse', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(7, 'nurse1', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Светлана', 'Казакова', 2, NULL, NULL),
+(8, 'karl123', '3ca9c4ab77a2deec98db4cf0803bee0ce2ccef10c1b0f872221f8e64da95f21632e263d0c8d5f15fe20daec58fb43a41ec13230abe2a12129d8ac43e15bc8734', 'Карл', 'Шафранек', 1, 2, 3);
+===
+Database initiating error:
+java.sql.SQLException: Incorrect string value: '\xD0\x92\xD1\x8F\xD1\x87...' for column 'first_name' at row 3
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:764)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:648)
+	at main.java.ua.nure.bogun.epammed.database.ScriptRunner.run(ScriptRunner.java:52)
+	at main.java.ua.nure.bogun.epammed.database.DBManager.createDB(DBManager.java:80)
+	at main.java.ua.nure.bogun.epammed.servlets.LifestyleListener.contextInitialized(LifestyleListener.java:41)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4685)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5146)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:717)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:690)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:705)
+	at org.apache.catalina.startup.HostConfig.manageApp(HostConfig.java:1728)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.tomcat.util.modeler.BaseModelMBean.invoke(BaseModelMBean.java:289)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:819)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:801)
+	at org.apache.catalina.mbeans.MBeanFactory.createStandardContext(MBeanFactory.java:456)
+	at org.apache.catalina.mbeans.MBeanFactory.createStandardContext(MBeanFactory.java:405)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.tomcat.util.modeler.BaseModelMBean.invoke(BaseModelMBean.java:289)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:819)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:801)
+	at com.sun.jmx.remote.security.MBeanServerAccessController.invoke(MBeanServerAccessController.java:468)
+	at javax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:1468)
+	at javax.management.remote.rmi.RMIConnectionImpl.access$300(RMIConnectionImpl.java:76)
+	at javax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:1309)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:1408)
+	at javax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:829)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:357)
+	at sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+2020-04-25 19:47:48 INFO  ScriptRunner:49 - Executing: 
+CREATE TABLE `meeting` (
+  `meeting_id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`meeting_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+2020-04-25 19:47:48 INFO  ScriptRunner:64 - Database initiating finished.

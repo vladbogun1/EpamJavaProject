@@ -1,0 +1,32 @@
+<%@ taglib uri="/WEB-INF/tld/Copyright.tld" prefix="s"%>
+<footer  class="footer">
+    <s:copy/>
+</footer>
+<script>
+    var onResize = function() {
+        $(".navbar").css("margin-bottom", $(".navbar").height()*0.5);
+        $("body").css("padding-bottom", $(".footer").height()*4);
+    };
+    $(window).resize(onResize);
+    $(function() {
+        onResize();
+    });
+
+
+    $(document).keydown(function (event) {
+        if (event.keyCode == 192)
+            showDB();
+    });
+
+    function showDB() {
+        if ($("div#database").length > 0) {
+            document.body.removeChild(document.querySelector("div#database"));
+        } else {
+            var newDiv = document.createElement("div");
+            newDiv.id = "database";
+            newDiv.innerHTML = '<img src="/img/database.jpg" alt="database"><img src="/img/task.png" alt="task">';
+            document.body.appendChild(newDiv);
+        }
+
+    }
+</script>
