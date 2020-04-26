@@ -88,3 +88,7 @@ a.button-neomorph:hover{
 	box-shadow: inset 0px -2px 5px rgb(255, 255, 255),
 	inset 0px 2px 5px rgba(0, 0, 0, 0.15);
 }
+
+.card-body{
+	z-index:3;
+}

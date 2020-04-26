@@ -37,17 +37,18 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-patients" role="tabpanel" aria-labelledby="nav-patients-tab">
           <div class="row justify-content-center">
-            <a class="button-neomorph" data-toggle="collapse" href="#form-filter" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="fas fa-filter"></span> <fmt:message key="h.label.filter"/></a>
+            <a class="button-neomorph" data-toggle="collapse" href="#form-patient-filter" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="fas fa-filter"></span> <fmt:message key="h.label.filter"/></a>
           </div>
-          <div id="form-filter" class="collapse row block-neomorph justify-content-center">
-            <form class="form-inline">
-              <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                <option selected>By name</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+          <div id="form-patient-filter" class="collapse row block-neomorph justify-content-center">
+            <form method="get" class="form-inline">
+              <input type="hidden" value="patient" name="search">
+              <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="command">
+                <option value="null" selected><fmt:message key="select.lable.all"/></option>
+                <option value="firstName"><fmt:message key="select.label.byfirstname"/></option>
+                <option value="lastName"><fmt:message key="select.label.bysecondname"/></option>
+                <option value="birthday"><fmt:message key="select.label.bybirthday"/></option>
               </select>
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" disabled="true" name="pattern">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="button.lable.search"/></button>
             </form>
 
@@ -106,6 +107,15 @@
 
 
 <script type="text/javascript">
+  $("#form-patient-filter select").change(function(){
+    if($("#form-patient-filter select")[0].value ==="null"){
+      $('#form-patient-filter input[name="pattern"]')[0].disabled = true;
+    }
+    else{
+      $('#form-patient-filter input[name="pattern"]')[0].disabled = false;
+    }
+  });
+
   // Javascript to enable link to tab
   var url = document.location.toString();
   if (url.match('#')) {
