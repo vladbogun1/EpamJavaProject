@@ -11,13 +11,13 @@
   <html>
   <head>
     <title>MainPage</title>
-    <%@include file="/WEB-INF/files/lang.jspf" %>
+    <%@include file="/WEB-INF/jspf/lang.jspf" %>
     <jsp:include page="/WEB-INF/files/bootstrap.html"/>
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/mainpageAdmin.css" rel="stylesheet">
   </head>
   <body>
-    <%@include file="/WEB-INF/jspf/headerAdmin.jspf" %>
+    <%@include file="/WEB-INF/jspf/header.jspf" %>
     
 
 
@@ -42,7 +42,7 @@
           <div id="form-patient-filter" class="collapse row block-neomorph justify-content-center">
             <form method="get" class="form-inline">
               <input type="hidden" value="patient" name="search">
-              <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="command">
+              <select class="custom-select my-1 mr-sm-2"  name="command">
                 <option value="null" selected><fmt:message key="select.lable.all"/></option>
                 <option value="firstName"><fmt:message key="select.label.byfirstname"/></option>
                 <option value="lastName"><fmt:message key="select.label.bysecondname"/></option>
@@ -50,6 +50,7 @@
               </select>
               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" disabled="true" name="pattern">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="button.lable.search"/></button>
+              <a class="btn btn-outline-danger my-2 my-sm-0" type="submit"><fmt:message key="button.lable.reset"/></a>
             </form>
 
           </div>
@@ -61,10 +62,10 @@
               <div class="card-body">
                 <h5>${patient.getFirstName()} ${patient.getLastName()}</h5>
                 <p>
-                  <fmt:message key="h.label.birthday"/>: ${patient.getBirthday().toString()}
+                  <fmt:message key="h.label.birthday"/>: ${patient.getBirthday().toString()}<br>
                   <fmt:message key="h.label.lastmeeting"/>:
                 </p>
-                <a href="#" class="card-link"><fmt:message key="h.label.cardhistory"/></a>
+                <a href="/profile?patient=${patient.getId()}" class="card-link"><fmt:message key="h.label.cardhistory"/></a>
               </div>
             </div>
           </c:forEach>
@@ -77,25 +78,50 @@
 
 
 
-       <div class="row justify-content-center">
-        <c:forEach var="doctor" items="${doctors}">
-        <div class="card block-neomorph">
-          <img src="${doctor.getImage()}" alt="doctor">
-          <div class="card-body">
-            <h5>${doctor.getFirstName()} ${doctor.getLastName()}</h5>
-            <p>
-              <fmt:message key="h.label.specialization"/>: ${doctor.getSpecialization().getSpecializationName()}
-              <fmt:message key="h.label.patientscount"/>: 0
-            </p>
-            <a href="#" class="card-link"><fmt:message key="h.label.meetinghistory"/></a>
-          </div>
+
+
+        <div class="row justify-content-center">
+          <a class="button-neomorph" data-toggle="collapse" href="#form-doctor-filter" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="fas fa-filter"></span> <fmt:message key="h.label.filter"/></a>
         </div>
-      </c:forEach>
+        <div id="form-doctor-filter" class="collapse row block-neomorph justify-content-center">
+          <form method="get" class="form-inline">
+            <input type="hidden" value="doctor" name="search">
+            <select class="custom-select my-1 mr-sm-2" name="command">
+              <option value="null" selected><fmt:message key="select.lable.all"/></option>
+              <option value="firstName"><fmt:message key="select.label.byfirstname"/></option>
+              <option value="lastName"><fmt:message key="select.label.bysecondname"/></option>
+              <option value="patients"><fmt:message key="select.label.patientscount"/></option>
+              <option value="category"><fmt:message key="select.label.bycategory"/></option>
+            </select>
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" disabled="true" name="pattern">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="button.lable.search"/></button>
+          </form>
+
+        </div>
+
+
+
+
+
+        <div class="row justify-content-center">
+          <c:forEach var="doctor" items="${doctors}">
+          <div class="card block-neomorph">
+            <img src="${doctor.getImage()}" alt="doctor">
+            <div class="card-body">
+              <h5>${doctor.getFirstName()} ${doctor.getLastName()}</h5>
+              <p>
+                <fmt:message key="h.label.specialization"/>: ${doctor.getSpecialization().getSpecializationName()}<br>
+                <fmt:message key="h.label.patientscount"/>: 0
+              </p>
+              <a href="/profile?user=${doctor.getLogin()}" class="card-link"><fmt:message key="h.label.meetinghistory"/></a>
+            </div>
+          </div>
+        </c:forEach>
+      </div>
+
+
     </div>
-
-
   </div>
-</div>
 
 
 
@@ -113,6 +139,14 @@
     }
     else{
       $('#form-patient-filter input[name="pattern"]')[0].disabled = false;
+    }
+  });
+  $("#form-doctor-filter select").change(function(){
+    if($("#form-doctor-filter select")[0].value ==="null"){
+      $('#form-doctor-filter input[name="pattern"]')[0].disabled = true;
+    }
+    else{
+      $('#form-doctor-filter input[name="pattern"]')[0].disabled = false;
     }
   });
 

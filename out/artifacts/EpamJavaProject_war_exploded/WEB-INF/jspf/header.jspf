@@ -1,0 +1,48 @@
+
+<nav class="navbar navbar-expand-md sticky-top navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="${pageContext.request.contextPath}/img/epam_logo.png"  alt='<fmt:message key="header.label.company"/>' class="d-inline-block align-middle mr-2">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin"><fmt:message key="header.label.mainservices" /></a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/service"><fmt:message key="h.label.service" /></a></li>
+            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/profile?user=${user.getLogin()}"><fmt:message key="header.label.profile" /></a></li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="dropdown">
+                <a class="nav-link" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><fmt:message key="header.label.mylanguage" /><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><span class="nav-link" onclick="changeLang('language=ru')">Ru-ru</span></li>
+                    <li><span class="nav-link" onclick="changeLang('language=en')">En-en</span></li>
+                </ul>
+
+            </li>
+            <li><a class="nav-link" href="${pageContext.request.contextPath}/LogOut"><fmt:message key="header.label.exit" /></a></li>
+        </ul>
+
+    </div>
+</nav>
+
+<script>
+    var links = document.querySelectorAll(".navbar ul");
+    [].forEach.call(links, function(ul){
+        var lis = ul.querySelectorAll("li");
+        [].forEach.call(lis, function(li){
+            var is = false;
+            var as = li.querySelectorAll("a");
+            [].forEach.call(as, function(a){
+                if(window.location.href.indexOf(a.href)!==-1){
+                    is = true;
+                }
+            });
+            if(is){
+                li.classList.add("active");
+            }
+        });
+    });
+</script>

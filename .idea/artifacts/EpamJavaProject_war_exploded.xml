@@ -13,6 +13,7 @@
           <element id="library" level="project" name="mysql-connector-java-8.0.17" />
           <element id="library" level="project" name="jstl-1.2" />
           <element id="library" level="application" name="avatar-generator-1.1.0" />
+          <element id="library" level="project" name="avatar-generator-1.1.0" />
         </element>
       </element>
     </root>

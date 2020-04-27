@@ -1,6 +1,7 @@
 package main.java.ua.nure.bogun.epammed.servlets;
 
 import main.java.ua.nure.bogun.epammed.database.DBManager;
+import main.java.ua.nure.bogun.epammed.service.PropertyWorker;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
@@ -21,7 +22,7 @@ public class LifestyleListener implements ServletContextListener,
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         System.setProperty("current.date.time", dateFormat.format(new Date()));
     }
-    private static final Logger logger = Logger.getLogger(LifestyleListener.class);
+    private static Logger logger;
 
 
     // Public constructor is required by servlet spec
@@ -36,7 +37,7 @@ public class LifestyleListener implements ServletContextListener,
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
-
+        logger = Logger.getLogger(LifestyleListener.class);
         logger.info("Server started.");
         DBManager.createDB();
 

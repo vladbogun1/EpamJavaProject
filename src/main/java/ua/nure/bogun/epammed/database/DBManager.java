@@ -1,12 +1,11 @@
 package main.java.ua.nure.bogun.epammed.database;
 
+import main.java.ua.nure.bogun.epammed.service.PropertyWorker;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Objects;
 import java.util.Properties;
 
 
@@ -14,25 +13,13 @@ public class DBManager {
 
     private static final Logger logger = Logger.getLogger(DBManager.class);
     // =================== singleton
-    protected static String CONNECTION_URL;
+    static String CONNECTION_URL;
     // =================== singleton
 
     private static DBManager instance;
 
 
-    private static String readProperty(String path, String property) {
-        Properties prop = new Properties();
-        String result = null;
-        try {
-            prop.load(
-                    DBManager.class.getClassLoader().getResourceAsStream(path)
-            );
-            result = prop.getProperty(property);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+
 
     private synchronized void readPropertyConnection(String property) {
         Properties prop = new Properties();
@@ -52,7 +39,7 @@ public class DBManager {
         }
     }
 
-        public static Connection getConnection(String url) throws SQLException {
+        static Connection getConnection(String url) throws SQLException {
         return DriverManager.getConnection(url);
     }
     public static synchronized DBManager getInstance() {
@@ -78,7 +65,7 @@ public class DBManager {
             con = DBManager.getInstance().getConnection(CONNECTION_URL);
             System.out.println(CONNECTION_URL);
             ScriptRunner.run(con, new File(
-                    readProperty("db.properties", "connection.init.path")
+                    PropertyWorker.readProperty("db.properties", "connection.init.path")
             ));
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -86,7 +73,7 @@ public class DBManager {
             close(con);
         }
     }
-    public static void close(AutoCloseable ac) {
+    static void close(AutoCloseable ac) {
         if (ac != null) {
             try {
                 ac.close();
@@ -96,7 +83,7 @@ public class DBManager {
         }
     }
 
-    public static void rollback(Connection con) {
+    static void rollback(Connection con) {
         if (con != null) {
             try {
                 con.rollback();
@@ -105,7 +92,7 @@ public class DBManager {
             }
         }
     }
-    public void commitAndClose(Connection con) {
+    static void commitAndClose(Connection con) {
         if (con != null) {
             try {
 //                con.commit();

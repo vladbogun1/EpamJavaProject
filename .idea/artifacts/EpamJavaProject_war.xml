@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="EpamJavaProject:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/EpamJavaProject_war</output-path>
+    <root id="archive" name="EpamJavaProject_war.war">
+      <element id="artifact" artifact-name="EpamJavaProject:war exploded" />
+    </root>
+  </artifact>
+</component>

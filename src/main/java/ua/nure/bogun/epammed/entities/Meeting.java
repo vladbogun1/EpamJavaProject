@@ -3,25 +3,11 @@ package main.java.ua.nure.bogun.epammed.entities;
 import java.sql.Date;
 
 public class Meeting extends Entity{
-    private int patientId;
-    private int userId;
+
     private Date date;
+    private Patient patient;
+    private User user;
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
 
     public void setDate(Date date) {
         this.date = date;
@@ -31,12 +17,29 @@ public class Meeting extends Entity{
         return date;
     }
 
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String toString() {
         return "Meeting{" +
-                "patientId=" + patientId +
-                ", userId=" + userId +
-                ", date=" + date +
+                "date=" + date +
+                ", patient=" + patient +
+                ", user=" + user +
                 '}';
     }
 }

@@ -1,0 +1,59 @@
+input.text{
+	border: none;
+	display: block;
+	/* font-family: consolas, monotype; */
+	/* font-size: 14px; */
+	/* width: 100%; */
+	/* height: auto; */
+	background: transparent;
+	background-color: transparent!important;
+	-webkit-appearance: none;
+}
+
+.block-neomorph{
+	position: relative;
+	transition: all 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	box-shadow: 0px -6px 10px rgba(255, 255, 255, 1), 0px 4px 15px rgba(0, 0, 0, 0.15);
+	background: #f2f2f2;
+	border-radius: 2rem;
+	border: none;
+	outline: 0 !important;
+	outline-style: none;
+}
+.block-neomorph:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 2rem;
+	z-index: 2;
+}
+.block-neomorph:hover {
+	box-shadow: 0 15px 20px rgba(0, 0, 0, 0.02);
+}
+.block-neomorph:hover:after {
+	box-shadow: inset 0px -2px 5px rgb(255, 255, 255),
+	inset 0px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.tab-pane>.block-neomorph{
+	padding: 2em;
+	margin: 1em;
+}
+.list-group>.block-neomorph {
+	border-radius: 2rem!important;
+}
+.nav-tabs.block-neomorph>a,.nav-tabs.block-neomorph>a:active{
+	z-index: 3;
+	background-color: transparent!important;
+	border: 0;
+}
+
+form>.form-group{
+	z-index: 3;
+}
+form.block-neomorph:after {
+    z-index: -1;
+}

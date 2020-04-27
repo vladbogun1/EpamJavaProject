@@ -12,6 +12,9 @@ public class UserService {
     public User getUserByLogin(String login) {
         return UserDBManager.getInstance().findUserByLogin(login);
     }
+    public User getUserById(int id) {
+        return UserDBManager.getInstance().findUserById(id);
+    }
     public User getAdminByLogin(String login) {
         return UserDBManager.getInstance().findAdminByLogin(login);
     }
@@ -24,5 +27,9 @@ public class UserService {
 
     public List<User> getAllDoctors() throws DBException {
         return UserDBManager.getInstance().findAllDoctors();
+    }
+
+    public boolean updateUser(User user) throws DBException {
+        return UserDBManager.getInstance().update(user);
     }
 }

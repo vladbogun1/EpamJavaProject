@@ -69,6 +69,7 @@ CREATE TABLE `meeting` (
   `meeting_id` int(11) NOT NULL AUTO_INCREMENT,
   `patient_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `meeting_date` date DEFAULT NULL,
   FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   PRIMARY KEY (`meeting_id`)

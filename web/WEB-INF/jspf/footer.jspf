@@ -24,7 +24,7 @@
         } else {
             var newDiv = document.createElement("div");
             newDiv.id = "database";
-            newDiv.innerHTML = '<img src="/img/database.jpg" alt="database"><img src="/img/task.png" alt="task">';
+            newDiv.innerHTML = '<img src="/img/database.png" alt="database"><img src="/img/task.png" alt="task"><a href="https://github.com/vladbogun1/EpamJavaProject" target="blank">GitHub</a>';
             document.body.appendChild(newDiv);
         }
 
