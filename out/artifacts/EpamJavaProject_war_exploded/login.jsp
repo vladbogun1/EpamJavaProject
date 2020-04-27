@@ -13,7 +13,7 @@
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet">
 </head>
 <body>
-    <%@include file="/WEB-INF/files/lang.jspf" %>
+    <%@include file="/WEB-INF/jspf/lang.jspf" %>
     <div class="container">
         <% if (request.getAttribute("disconnected") != null) {%>
         <div class="alert alert-danger">

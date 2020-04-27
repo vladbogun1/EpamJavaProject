@@ -18,6 +18,11 @@ public class PatientDBManager extends DBManager{
 
     private static final String SELECT_PATIENT_BY_ID = "SELECT * FROM " +
             "patient WHERE patient_id=?";
+    private static final String UPDATE = "UPDATE patient SET first_name = ?, last_name=?, " +
+            "birthday=? WHERE patient_id = ?";
+    private static final String INSERT = "INSERT INTO patient" +
+            "(first_name, last_name, birthday) " +
+            "VALUES(?, ?, ?)";
 
     private static PatientDBManager instance;
     private static final Logger logger = Logger.getLogger(PatientDBManager.class);
@@ -95,6 +100,56 @@ public class PatientDBManager extends DBManager{
         }
 
         return list;
+    }
+
+    public boolean update(Patient patient) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        boolean result =  true;
+        try {
+            connection = getConnection(CONNECTION_URL);
+
+            statement = connection.prepareStatement(UPDATE);
+            statement.setString(1, patient.getFirstName());
+            statement.setString(2, patient.getLastName());
+            statement.setDate(3, patient.getBirthday());
+            statement.setInt(4, patient.getId());
+
+            statement.execute();
+        } catch (SQLException e) {
+            result = false;
+            logger.error("Error in updating user", e);
+            throw new DBException("Error in updating user", e);
+        } finally {
+            close(connection);
+            close(statement);
+        }
+        return result;
+    }
+
+    public boolean insert(Patient patient) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        boolean status = true;
+        try {
+            connection = getConnection(CONNECTION_URL);
+
+            statement = connection.prepareStatement(INSERT);
+            statement.setString(1, patient.getFirstName());
+            statement.setString(2, patient.getLastName());
+            statement.setDate(3, patient.getBirthday());
+            statement.execute();
+
+        } catch (SQLException e) {
+            status = false;
+            logger.error("Error in creating patient", e);
+            throw new DBException("Error in creating patient", e);
+
+        } finally {
+            close(connection);
+            close(statement);
+        }
+        return status;
     }
 
 }

@@ -1,0 +1,16 @@
+﻿<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="lang" />
+<script type="text/javascript">
+	function changeLang(str){
+		var url = document.location.toString();
+		url = url.split("&language=ru").join("").split("&language=en").join("").split("?language=ru").join("").split("?language=en").join("");
+		if (url.match(/(\?)/)) {
+			url+="&"+str;
+		}
+		else{
+			url+="?"+str;
+		}
+		location.href =url;
+	}
+</script>

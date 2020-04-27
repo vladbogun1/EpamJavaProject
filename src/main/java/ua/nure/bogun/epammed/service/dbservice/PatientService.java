@@ -12,7 +12,15 @@ public class PatientService {
     public List<Patient> getAllPatients() throws DBException {
         return PatientDBManager.getInstance().findAllPatients();
     }
-    public Patient getPatientById(int patientId) throws DBException {
+    public Patient getPatientById(int patientId) {
         return PatientDBManager.getInstance().findPatientById(patientId);
+    }
+
+    public boolean updatePatient(Patient patient) throws DBException {
+        return PatientDBManager.getInstance().update(patient);
+    }
+
+    public boolean createPatient(Patient patient)  throws DBException{
+        return PatientDBManager.getInstance().insert(patient);
     }
 }

@@ -31,7 +31,7 @@ public class HospitalCardDBManager extends DBManager{
         card.setPatientId(rs.getInt("patient_id"));
         card.setDate(rs.getDate("hospital_card_date"));
         card.setDiagnose(rs.getString("diagnosis"));
-        card.setMedicine(rs.getInt("name_of_medication"));
+        card.setMedicine(rs.getString("name_of_medication"));
         card.setDone(rs.getBoolean("done"));
         return  card;
     }

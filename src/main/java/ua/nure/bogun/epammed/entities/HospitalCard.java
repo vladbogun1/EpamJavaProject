@@ -6,7 +6,7 @@ public class HospitalCard extends Entity{
     private int patientId;
     private Date date;
     private String diagnose;
-    private int medicine;
+    private String medicine;
     private boolean done;
 
     public void setPatientId(int patientId) {
@@ -33,11 +33,11 @@ public class HospitalCard extends Entity{
         return diagnose;
     }
 
-    public void setMedicine(int medicine) {
+    public void setMedicine(String medicine) {
         this.medicine = medicine;
     }
 
-    public int getMedicine() {
+    public String getMedicine() {
         return medicine;
     }
 
